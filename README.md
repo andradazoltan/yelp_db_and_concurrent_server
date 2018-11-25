@@ -10,7 +10,7 @@ In addition to these aspects, the project also touches upon rudimentary methods 
 
 ### Background
 
-This project uses an excerpt from the [Yelp Academic Dataset](https://www.yelp.com/academic_dataset). Specifically, the data comes in [JSON](https://en.wikipedia.org/wiki/JSON) format and is about restaurants, reviews of the restaurants, and user information (for those contributing reviews).The dataset is used to create and maintain a simple in-memory database with restaurants, users and reviews.
+This project uses an excerpt from the [Yelp Academic Dataset](https://www.yelp.com/academic_dataset). Specifically, the data comes in [JSON](https://en.wikipedia.org/wiki/JSON) format and is regarding restaurants, reviews of the restaurants, and user information (for those contributing reviews).The dataset is used to create and maintain a simple in-memory database with restaurants, users and reviews.
 
 ### Part I: A Database as a Datatype
 
@@ -50,7 +50,7 @@ By analyzing a user's past ratings, we can try to predict what rating the user m
 
 To predict ratings, we implemented a simple least-squares linear regression, a widely used statistical method that approximates a relationship between some input feature (such as price) and an output value (the rating) with a line. The algorithm takes a sequence of input-output pairs and computes the slope and intercept of the line that minimizes the mean of the squared difference between the line and the outputs.
 
-Implement the `getPredictorFunction` method, which takes a user and returns a _function_ that predicts the users ratings. Use the restaurant's priciness as the feature (`x` values in the regression) to predict the user's rating (`y` values in the regression).
+The `getPredictorFunction` method takes a user and returns a _function_ that predicts the users ratings. The restaurant's priciness is used as the feature (`x` values in the regression) to predict the user's rating (`y` values in the regression).
 
 One method of computing these values is by calculating the sums of squares, S<sub>xx</sub>, S<sub>yy</sub>, and S<sub>xy</sub>:
 
@@ -66,15 +66,7 @@ After calculating the sums of squares, the regression coefficients, and R<sup>2<
 
 ### Part III: A YelpDB Server
 
-In the next part of this machine problem, you should implement a multi-threaded server application, `YelpDBServer` that wraps a `YelpDB` instance.
-
-One should be able to start the server from the command line using
-
-```
-java ca.ece.ubc.cpen221.mp5.YelpDBServer 4949
-```
-
-where `4949` is the port number at which the server should listen for connection requests. The server should use the command line argument to decide which port number to bind to.
+The next part of this project included the implementation of a multi-threaded server application, `YelpDBServer` that wraps a `YelpDB` instance.
 
 The server should be able to handle more than one connection at the same time (and hence the need for multithreading).
 
@@ -82,7 +74,7 @@ The server should be able to handle more than one connection at the same time (a
 
 The server should be able to handle some simple requests from a client that connects to it.
 
-Here are five simple requests that you should implement:
+Here are five simple requests that were implemented:
 
 + `GETRESTAURANT <business id>`: To this request, the server should respond with the restaurant details in JSON format for the restaurant that has the provided business identifier. If there is no such restaurant then one should use the error message as above. (Note that the business is is not wrapped in `< >`. The use of `< >` is to indicate that the command should be followed by a required argument. So the request will look like this: `GETRESTAURANT h_we4E3zofRTf4G0JTEF0A` and this example refers to the restaurant Fondue Fred in the provided dataset.)
 + `ADDUSER <user information>`: This request is a string that begins with the keyword (in our protocol), `ADDUSER`, followed by user details in JSON, formatted as suited for the Yelp dataset. Since we are adding a new user the JSON formatted information will contain only the user's name. So the JSON string may look like this `{"name": "Sathish G."}`. The server should interact with the RestaurantDB to create a new user, generate a new userid (it does not have to be in the Yelp userid format, you can use your own format for new users), generate a new URL (although it is a dummy URL) and then acknowledge that the user was created by responding with a more complete JSON string such as:
@@ -90,21 +82,21 @@ Here are five simple requests that you should implement:
 + `ADDRESTAURANT <restaurant information>`: This command has structure similar to the `ADDUSER` command in that the JSON string representing a restaurant should have all the necessary details to create a new restaurant except for details such as `business_id` and `stars`. If the provided string is incomplete or erroneous , the error message should `ERR: INVALID_RESTAURANT_STRING`.
 + `ADDREVIEW <review information>`: The last simple command to implement is an `ADDREVIEW` command which has the same principle as the other commands. The possible error codes are `ERR: INVALID_REVIEW_STRING`, `ERR: NO_SUCH_USER` and `ERR: NO_SUCH_RESTAURANT`.
 
-Remember that when multiple clients are making such requests to change the database you will need to deal with potential data races and other concurrency-related conflicts.
+A large factor we had to consider was that when multiple clients are making such requests to change the database, there may be data races and other concurrency-related conflicts that come up.
 
-For any other errors in the requests, you can send an `ERR: ILLEGAL_REQUEST`.
+For any other errors in the requests, `ERR: ILLEGAL_REQUEST` was sent.
 
 ### Part V: Structured Queries
 
-The final part of this machine problem is to support structured queries over the database you have constructed. The request-response pattern will be handled by the `RestaurantDBServer` as was the case with "simple" requests earlier.
+The final part of this project was to support structured queries over the database. The request-response pattern was handled by the `RestaurantDBServer` as was the case with "simple" requests earlier.
 
-We would like to process queries such as "list all restaurants in a neighbourhood that serve Chinese food and have moderate ($$) price."
+We wanted to process queries such as "list all restaurants in a neighbourhood that serve Chinese food and have moderate ($$) price."
 
 In our request-response model, the request would begin with the keyword `QUERY` followed by a string that represents the query.
 
 A query string may be: `in(Telegraph Ave) && (category(Chinese) || category(Italian)) && price <= 2`. This query string represents a query to obtain a list of Chinese and Italian restaurants in the Telegraph Avenue neighbourhood that have a price range of 1-2.
 
-For the query string above, the server would respond with a list of restaurants in JSON notation. If no restaurants match the query (for any reason) then the server should respond with `ERR: NO_MATCH`. If no query string is sent or if the query is ill-formed then the response should be `ERR: INVALID_QUERY`.
+For the query string above, the server would respond with a list of restaurants in JSON notation. If no restaurants match the query (for any reason) then the server responds with `ERR: NO_MATCH`. If no query string is sent or if the query is ill-formed then the response is `ERR: INVALID_QUERY`.
 
 The grammar for the query language looks something like this:
 
