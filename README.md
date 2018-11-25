@@ -10,7 +10,7 @@ In addition to these aspects, the project also touches upon rudimentary methods 
 
 ### Background
 
-This project uses an excerpt from the [Yelp Academic Dataset](https://www.yelp.com/academic_dataset). Specifically, the data comes in [JSON](https://en.wikipedia.org/wiki/JSON) format and is regarding restaurants, reviews of the restaurants, and user information (for those contributing reviews).The dataset is used to create and maintain a simple in-memory database with restaurants, users and reviews.
+This project uses an excerpt from the [Yelp Academic Dataset](https://www.yelp.com/academic_dataset). Specifically, the data comes in [JSON](https://en.wikipedia.org/wiki/JSON) format and is regarding restaurants, reviews of the restaurants, and user information (for those contributing reviews). The dataset is used to create and maintain a simple in-memory database with restaurants, users and reviews.
 
 ### Part I: A Database as a Datatype
 
