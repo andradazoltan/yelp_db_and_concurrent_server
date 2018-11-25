@@ -1,4 +1,4 @@
-###Contributions 
+### Contributions 
 
 **Andrada Zoltan**
 * K-means Clustering
