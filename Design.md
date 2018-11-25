@@ -2,7 +2,7 @@
 MP5 DESIGN
 ===
 
-#####**DATABASE INTERFACE: MP5DB**  
+##### **DATABASE INTERFACE: MP5DB**  
 
 * **CLASS** YELPDB implements MP5DB
     * Attributes 
