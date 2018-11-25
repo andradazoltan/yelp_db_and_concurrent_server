@@ -1,53 +1,31 @@
-CPEN 221 / Machine Problem 5
-
 Restaurants, Queries and Statistical Learning
 ===
 
-This machine problem is designed to allow you to explore multiple aspects of software construction:
+This project explores the following aspects of software construction:
 + managing complex ADTs;
 + multithreading and the client-server pattern;
 + query parsing and execution.
 
-In addition to these aspects, the problem also touches upon rudimentary methods for statistical inference and learning.
-
-**Read this document carefully before you start.**
-
-### Logistics
-
-+ You should complete this assignment in pairs.
-+ The submission deadline is December 1, 11:59pm Vancouver time.
-+ To get your Github repositories set up, using [this link](https://classroom.github.com/g/DIS5KaZf).
+In addition to these aspects, the project also touches upon rudimentary methods for statistical inference and learning.
 
 ### Background
 
-For this machine problem, you will work with an excerpt from the [Yelp Academic Dataset](https://www.yelp.com/academic_dataset). Specifically, you will work with data (in [JSON](https://en.wikipedia.org/wiki/JSON) format) on restaurants, and this data includes information about some restaurants, reviews of the restaurants, and user information (for those contributing reviews).
-
-You will use the dataset to create and maintain a simple in-memory database with restaurants, users and reviews. (Since the Yelp Academic Dataset does not contain details of business near UBC we are using information for restaurants near UC Berkeley or UCB!)
-
-The given dataset is in the JSON format and you can use the [JSON Processing project](https://jsonp.java.net) implementation of a framework for working with JSON in Java 8. Using such a framework requires that the Java compiler knows where to find the relevant files. A build manager like Gradle helps you indicate the JSON processing library as a dependency (for example, see [mvnrepository](https://mvnrepository.com/artifact/javax.json/javax.json-api/1.0-b01).) You may also want to read: [Gradle Dependency Management](https://docs.gradle.org/current/userguide/dependency_management.html).
+This project uses an excerpt from the [Yelp Academic Dataset](https://www.yelp.com/academic_dataset). Specifically, the data comes in [JSON](https://en.wikipedia.org/wiki/JSON) format and is about restaurants, reviews of the restaurants, and user information (for those contributing reviews).The dataset is used to create and maintain a simple in-memory database with restaurants, users and reviews.
 
 ### Part I: A Database as a Datatype
 
-The first part of this machine problem is to build a datatype (`YelpDB`) that represents Yelp's restaurant dataset.
+The first part of this project involved building a datatype (`YelpDB`) that represents Yelp's restaurant dataset.
 
-At the minimum:
+As a requirement from the assigment:
 
 + This datatype must implement the `MP5Db` interface, and
 + This datatype should have a constructor that takes three `String`s as arguments: these `Strings` represent filenames. The first file is the list of restaurants, the second file is the list of reviews and the third file is the user list.
 
-You should design this datatype to support a variety of useful operations. You have to decide on the representation for this datatype keeping extensibility (the ability to add new features and operations) in mind.
-
-To enable a reusable design, you many also want to examine some of the Amazon datasets (see [`http://jmcauley.ucsd.edu/data/amazon/`](http://jmcauley.ucsd.edu/data/amazon/)) and determine all the other datatypes you may need as well as useful subtype relationships. Think of simple types that can fit a variety of database situations and then subtype them to specialize for `YelpDB`.
-
-Before you start writing a lot of code, you should design the datatypes you want to create: what operations could these types support, what is a suitable representation and what are the rep invariants and abstraction functions. (You will have to document your design and discuss this with the instructor or a TA.) Think about enabling useful operations for your database and do not implement only the methods dictated by the `MP5Db` interface.
-
-For this part, complete a document called `Design.md` and place it in the main folder for your repository (where you would find this `README.md` file.) In this document, you should describe the choices you have made or plan on making. **This document should be available to the TAs and the instructor 12 hours ahead of your meeting with them.**
+Before we began writing a large portion of the code, we designed the datatypes, operations and rep invariants for these types. The initial plan can be seen in the [Design.md](https://github.com/andradazoltan/yelp_db_and_concurrent_server/blob/master/Design.md) document. The goal was to enable useful operations for the database that could make it reusable for a variety of applications, as well as allow for easy extensibility later.
 
 ### Part II: Statistical Learning
 
-In this part of the machine problem you will implement two approaches to statistical machine learning: one is an instance of unsupervised learning and the second is an instance of supervised learning. Statistical learning is an exciting area for computing today!
-
-The two operations that you have to support are also part of the `MP5Db` interface.
+This portion of the project includes implementation of two approaches to statistical machine learning: one is an instance of unsupervised learning and the second is an instance of supervised learning. Statistical learning is an exciting area for computing today!
 
 #### k-means Clustering
 
@@ -60,20 +38,17 @@ The k-means algorithm finds k centroids within a dataset that each correspond to
 
 This [visualization](http://tech.nitoyon.com/en/blog/2013/11/07/k-means/) is a good way to understand how the algorithm works.
 
-For the k-means clustering algorithm, you should implement a method that returns a `List` of `Set`s: each `Set` represents a cluster of restaurants. You should also implement a method that converts such a `List` to JSON format as illustrated by the JSON file `voronoi.json` in the directory `visualize`. (In this format, the field `weight` denotes the size of the dot used in the visualization. You can use the same weight for all restaurants.)
-
-You can run the provided visualization method using `python` (Python 3) and the visualization is called a [Voronoi tesselation](https://en.wikipedia.org/wiki/Voronoi_diagram).
+The visualization of the implemented algorithm can be run using the provided `python` (Python 3) method. The visualization is called a [Voronoi tesselation](https://en.wikipedia.org/wiki/Voronoi_diagram).
 
 > One can visualize the tessalation produced by k-means clustering by writing the JSON formatted cluster information to `voronoi.json` in the `visualize` directory and then launch `visualize.py` as follows: `python3 visualize.py`
-> For the curious, you can also see some Javascript in action here.
 
 #### Least Squares Regression
 
-As an instance of supervised learning, you will implement an algorithm for predicting the rating that a user may give to a restaurant.
+As an instance of supervised learning, an algorithm for predicting the rating that a user may give to a restaurant was implemented.
 
 By analyzing a user's past ratings, we can try to predict what rating the user might give to a new restaurant.
 
-To predict ratings, you will implement simple least-squares linear regression, a widely used statistical method that approximates a relationship between some input feature (such as price) and an output value (the rating) with a line. The algorithm takes a sequence of input-output pairs and computes the slope and intercept of the line that minimizes the mean of the squared difference between the line and the outputs.
+To predict ratings, we implemented a simple least-squares linear regression, a widely used statistical method that approximates a relationship between some input feature (such as price) and an output value (the rating) with a line. The algorithm takes a sequence of input-output pairs and computes the slope and intercept of the line that minimizes the mean of the squared difference between the line and the outputs.
 
 Implement the `getPredictorFunction` method, which takes a user and returns a _function_ that predicts the users ratings. Use the restaurant's priciness as the feature (`x` values in the regression) to predict the user's rating (`y` values in the regression).
 
@@ -88,8 +63,6 @@ After calculating the sums of squares, the regression coefficients, and R<sup>2<
 + b = S<sub>xy</sub> / S<sub>xx</sub>
 + a = mean(y) - b * mean(x)
 + R<sup>2</sup> = S<sub>xy</sub><sup>2</sup> / (S<sub>xx</sub> S<sub>yy</sub>)
-
-In this machine problem, we will use a **[functional interface](https://docs.oracle.com/javase/8/docs/api/java/util/function/package-summary.html)** to return functions.
 
 ### Part III: A YelpDB Server
 
@@ -156,41 +129,3 @@ ineq ::= <gt>|<gte>|<lt>|<lte>|<eq>
 <LParen> ::= "("
 <RParen> ::= ")"
 ```
-
-### Grading Guidelines
-
-We will grade your work using the following _approximate_ breakdown of the aspects of required.
-
-We will use the following approximate rubric to grade your work:		
-
-| Task | Grade Contribution |		
-|:----|---:|
-| Datatype Design    | 20%  |
-| k-means Clustering | 20% |		
-| Least Squares Regression | 20% |
-| Database Implementation: Simple Requests | 20% |		
-| Database Implementation: Structured Queries | 20% |
-
-Functionality apart, we will evaluate your submissions carefully along the following dimensions:
-+ code style (e.g., an A on Codacy);
-+ clear specifications for methods;
-+ implementation of unit tests (high test coverage and integration with Coveralls.io);
-+ code-level comments as appropriate;
-+ comments the indicate clearly what the representation invariants and abstraction functions are for the datatypes you create.
-
-### Hints
-
-- Use example code we have provided to implement a multi-threaded server.
-- You can use a parser generator (such as ANTLR) for parsing queries (or roll your own).
-- Consider using streams and parallel streams for some of the tasks.
-- There are several easier tasks you can accomplish before focusing on structured queries. **Use your time wisely.**
-- It is critical that your `build.gradle` file reflect any dependencies that your work may have (external libraries such as JSON parsers.) (You work will not be graded otherwise.)
-- When you complete this assignment, you would have implemented an approximation of a relational database. In the relational database world, a row is analogous to an instance of a datatype while a table definition is analogous to a datatype definition.
-- Ensure that you have Codacy and Coveralls set up early.
-- Your Github repo should reflect contributions from both team members.
-
-### Submission
-
-1. Commit and push your work to Github.
-2. Include a `Team.md` document where you indicate who worked on this assignment and how the work was divided up.
-3. Add a comment in the text box on Canvas indicating that you have submitted the work and the names of the students in the pair.
